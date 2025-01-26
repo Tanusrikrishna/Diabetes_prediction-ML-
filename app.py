@@ -19,7 +19,57 @@ except Exception as e:
 st.markdown(
     """
     <style>
-        /* Custom CSS styles here */
+        /* Change background color */
+        .stApp {
+            background-color: black; /* Light grey background */
+        }
+        
+        h5{
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFFFFF !important;
+            margin-bottom: 5px;
+        }
+
+        /* Style input fields */
+        input {
+            border: 2px solid black !important; /* Black border */
+            border-radius: 8px !important;
+            padding: 8px !important;
+            font-size: 18px !important;
+            background-color: #ffffff !important;
+            color: black !important;
+            border-color:white !important;
+        }
+
+        /* Style the predict button */
+        .stButton>button {
+            background-color: #28a745 !important; /* Green */
+            color: black !important;
+            font-weight: 18px !important;
+            border-radius: 10px !important;
+            padding: 10px !important;
+            width: 100% !important;
+            
+        }
+
+        /* Change button hover effect */
+        .stButton>button:hover {
+            background-color:#005d00 !important;
+            border-color: #005d00;
+        }
+
+        /* Style the output message */
+        .stSuccess {
+            font-size: 20px !important;
+            color: #155724 !important;
+            font-weight: bold !important;
+            background-color: #d4edda !important; /* Light green background */
+            padding: 15px !important;
+            border-radius: 10px !important;
+            border-color:black !important;
+        }
+        
     </style>
     """,
     unsafe_allow_html=True
@@ -56,28 +106,15 @@ age = st.number_input("", min_value=1, max_value=120, key="age")
 
 # Predict Button
 if st.button("Predict"):
-    if 'model' in locals() and 'scaler' in locals():  # Ensure model and scaler are loaded
-        # Convert input to numpy array
-        new_data = np.array([[pregnancies, glucose, bp, skin_thickness, insulin, bmi, dpf, age]])
-
-        # Debugging: Check the shape of new_data
-        st.write(f"Input Data: {new_data}")
-        st.write(f"Shape of Input Data: {new_data.shape}")
-
-        try:
-            # Scale the input
-            new_data_scaled = scaler.transform(new_data)
-            st.write(f"Scaled Data: {new_data_scaled}")
-        except Exception as e:
-            st.error(f"Error scaling data: {e}")
-            new_data_scaled = None
-
-        if new_data_scaled is not None:
-            # Predict
-            prediction = model.predict(new_data_scaled)
-
-            # Display Result
-            result = "🩺 You may have **Diabetes**. Please consult a doctor!" if prediction[0] == 1 else "✅ You are **Healthy**. Keep maintaining a good lifestyle!"
-            st.success(result)
-    else:
-        st.error("Model or scaler is not loaded correctly. Please check the logs.")
+    # Convert input to numpy array
+    new_data = np.array([[pregnancies, glucose, bp, skin_thickness, insulin, bmi, dpf, age]])
+    
+    # Scale the input
+    new_data_scaled = scaler.transform(new_data)
+    
+    # Predict
+    prediction = model.predict(new_data_scaled)
+    
+    # Display Result
+    result = "🩺 You may have **Diabetes**. Please consult a doctor!" if prediction[0] == 1 else "✅ You are **Healthy**. Keep maintaining a good lifestyle!"
+    st.success(result)
