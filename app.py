@@ -3,10 +3,17 @@ import numpy as np
 import pickle
 import os
 
-model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
-model = pickle.load(open(model_path, "rb"))
+# Error handling for loading model and scaler
+try:
+    model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
+    model = pickle.load(open(model_path, "rb"))
+except Exception as e:
+    st.error(f"Error loading model: {e}")
 
-scaler = pickle.load(open("scaler.pkl", "rb"))
+try:
+    scaler = pickle.load(open("scaler.pkl", "rb"))
+except Exception as e:
+    st.error(f"Error loading scaler: {e}")
 
 # Apply Custom CSS
 st.markdown(
