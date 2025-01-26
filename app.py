@@ -1,9 +1,11 @@
 import streamlit as st
 import numpy as np
 import pickle
+import os
 
-# Load trained model and scaler
-model = pickle.load(open("diabetes_model.pkl", "rb"))
+model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
+model = pickle.load(open(model_path, "rb"))
+
 scaler = pickle.load(open("scaler.pkl", "rb"))
 
 # Apply Custom CSS
